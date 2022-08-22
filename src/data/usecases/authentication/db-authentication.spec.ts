@@ -2,6 +2,7 @@ import { AuthenticationModel } from "../../../domain/usecases/authentication";
 import { HashComparer } from "../../protocols/criptography/hash-compare";
 import { TokenGenerator } from "../../protocols/criptography/token-generator";
 import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repository";
+import { UpdateAccessTokenRepository } from "../../protocols/db/update-access-token-repository";
 import { AccountModel } from "../add-account/db-add-account-protocols";
 import { DbAuthentication } from "./db-authentication";
 
@@ -23,10 +24,8 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   return new LoadAccountByEmailRepositoryStub();
 };
 const makeHashComparer = (): HashComparer => {
-  class HashComparerStub
-    implements HashComparer
-  {
-    async compare (value: string, hash: string): Promise<boolean> {
+  class HashComparerStub implements HashComparer {
+    async compare(value: string, hash: string): Promise<boolean> {
       return new Promise((resolve) => resolve(true));
     }
   }
@@ -34,14 +33,21 @@ const makeHashComparer = (): HashComparer => {
 };
 
 const makeTokenGenerator = (): TokenGenerator => {
-  class TokenGeneratorStub
-    implements TokenGenerator
-  {
-    async generate (id: string,): Promise<string> {
-      return new Promise((resolve) => resolve('any_token'));
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate(id: string): Promise<string> {
+      return new Promise((resolve) => resolve("any_token"));
     }
   }
   return new TokenGeneratorStub();
+};
+
+const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
+  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+    async update(id: string, token: string): Promise<void> {
+      return new Promise((resolve) => resolve());
+    }
+  }
+  return new UpdateAccessTokenRepositoryStub();
 };
 
 const makeFakeAuthentication = (): AuthenticationModel => ({
@@ -54,21 +60,26 @@ interface SutTypes {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
   hashCompareStub: HashComparer;
   tokenGeneratorStub: TokenGenerator;
+  updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
   const hashCompareStub = makeHashComparer();
   const tokenGeneratorStub = makeTokenGenerator();
+  const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository();
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
-    hashCompareStub, tokenGeneratorStub
+    hashCompareStub,
+    tokenGeneratorStub,
+    updateAccessTokenRepositoryStub
   );
   return {
     sut,
     loadAccountByEmailRepositoryStub,
     hashCompareStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    updateAccessTokenRepositoryStub,
   };
 };
 
@@ -122,7 +133,7 @@ describe("DbAuthentication UseCase", () => {
     const { sut, hashCompareStub } = makeSut();
     jest
       .spyOn(hashCompareStub, "compare")
-      .mockReturnValueOnce(new Promise(resolve => resolve(false)));
+      .mockReturnValueOnce(new Promise((resolve) => resolve(false)));
     const accessToken = await sut.auth(makeFakeAuthentication());
     expect(accessToken).toBeNull();
   });
@@ -149,5 +160,12 @@ describe("DbAuthentication UseCase", () => {
     const { sut } = makeSut();
     const accessToken = await sut.auth(makeFakeAuthentication());
     expect(accessToken).toBe("any_token");
+  });
+
+  test("Should call UpdateAccessTokenRepository with correct values", async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, "update");
+    await sut.auth(makeFakeAuthentication());
+    expect(updateSpy).toHaveBeenCalledWith("any_id", "any_token");
   });
 });
