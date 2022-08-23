@@ -6,8 +6,10 @@ export class JwtAdapter implements Encrypter {
   constructor(secret: string) {
     this.secret = secret;
   }
+
   async encrypt(value: string): Promise<string> {
-    await jwt.sign({ id: value }, this.secret);
-    return new Promise((resolve) => resolve(null));
+    const accessToken = await jwt.sign({ id: value }, this.secret);
+    return accessToken;
   }
+
 }
