@@ -6,8 +6,8 @@ import {
   Validation,
   Authentication,
 } from "./signup-controller-protocols";
-import { InvalidParamError } from "../../errors";
-import { badRequest, serverError, ok } from "../../helpers/http/http-helper";
+import { EmailInUseError, InvalidParamError } from "../../errors";
+import { badRequest, serverError, ok, forbidden } from "../../helpers/http/http-helper";
 
 export class SignUpController implements Controller {
   constructor(
@@ -28,6 +28,9 @@ export class SignUpController implements Controller {
         email,
         password,
       });
+      if(!account){
+        return forbidden(new EmailInUseError())
+      }
       const accessToken = await this.authentication.auth({
         email,
         password,
