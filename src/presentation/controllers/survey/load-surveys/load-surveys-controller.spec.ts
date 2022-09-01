@@ -74,7 +74,7 @@ describe("", () => {
 
   test("Should return 200 on success", async () => {
     const { sut } = makeSut();
-    const httpResponse = sut.handle({});
+    const httpResponse = await sut.handle({});
     expect(httpResponse).toEqual(ok(makeFakeSurveys()));
   });
 
