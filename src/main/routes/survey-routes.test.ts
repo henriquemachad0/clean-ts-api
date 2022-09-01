@@ -19,7 +19,7 @@ describe("Survey Routes", () => {
     await surveyCollection.deleteMany({});
   });
   describe("POST /surveys", () => {
-    test("Should return 403 on add survey success", async () => {
+    test("Should return 403 on add survey withou accessToken", async () => {
       await request(app)
         .post("/api/surveys")
         .send({
