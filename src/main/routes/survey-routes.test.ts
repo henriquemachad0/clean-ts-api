@@ -47,7 +47,8 @@ describe("Survey Routes", () => {
       const res = await accountCollection.insertOne({
         name: "Henrique",
         email: "henrique.machado@gmail.com",
-        password: "123"
+        password: "123",
+        role: "admin"
       });
 
       const id = res.ops[0]._id;
