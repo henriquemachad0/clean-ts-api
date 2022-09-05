@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { DbAddAccount } from "./db-add-account";
 import {
   Hasher,

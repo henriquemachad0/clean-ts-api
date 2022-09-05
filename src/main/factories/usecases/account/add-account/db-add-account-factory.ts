@@ -1,10 +1,8 @@
-import env from "../../../../config/env";
-import { DbAuthentication } from "../../../../../data/usecases/authentication/db-authentication";
-import { BcryptAdapter } from "../../../../../infra/criptography/bcrypt-adapter/bcrypt-adapter";
-import { JwtAdapter } from "../../../../../infra/criptography/jwt-adapter/jwt-adapter";
-import { AccountMongoRepository } from "../../../../../infra/db/mongodb/account/account-mongo-repository";
-import { AddAccount } from "../../../../../domain/usecases/add-account";
-import { DbAddAccount } from "../../../../../data/usecases/add-account/db-add-account";
+import { DbAddAccount } from "@/data/usecases/add-account/db-add-account";
+import { AddAccount } from "@/domain/usecases/add-account";
+import { BcryptAdapter } from "@/infra/criptography/bcrypt-adapter/bcrypt-adapter";
+import { AccountMongoRepository } from "@/infra/db/mongodb/account/account-mongo-repository";
+
 
 export const makeDbAddAccount = (): AddAccount => {
     const salt = 12

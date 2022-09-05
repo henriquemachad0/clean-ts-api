@@ -1,4 +1,3 @@
-import { badRequest, noContent, serverError } from "../../../helpers/http/http-helper";
 import {
   AddSurvey,
   Controller,
@@ -6,6 +5,11 @@ import {
   HttpResponse,
   Validation,
 } from "./add-survey-controller-protocols";
+import {
+  badRequest,
+  noContent,
+  serverError,
+} from "@/presentation/helpers/http/http-helper";
 
 export class AddSurveyController implements Controller {
   constructor(
@@ -22,11 +26,11 @@ export class AddSurveyController implements Controller {
       await this.addSurvey.add({
         question,
         answers,
-        date: new Date()
+        date: new Date(),
       });
       return noContent();
     } catch (error) {
-        return serverError(error)
+      return serverError(error);
     }
   }
 }
