@@ -1,7 +1,9 @@
 import { DbLoadAccountByToken } from "./db-load-account-by-token";
-import { Decrypter } from "@/data/protocols/criptography/decrypter";
-import { LoadAccountByTokenRepository } from "@/data/protocols/db/account/load-account-by-token-repository";
-import { AccountModel } from "@/domain/models/account";
+import {
+  Decrypter,
+  LoadAccountByTokenRepository,
+  AccountModel,
+} from "./db-load-account-by-token-protocols";
 
 const makeFakeAccount = (): AccountModel => ({
   id: "valid_id",
@@ -34,7 +36,7 @@ type SutTypes = {
   sut: DbLoadAccountByToken;
   decrypterStub: Decrypter;
   loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository;
-}
+};
 
 const makeSut = (): SutTypes => {
   const decrypterStub = makeDecrypter();
