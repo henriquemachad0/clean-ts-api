@@ -11,7 +11,7 @@ import {
   unauthorized,
   ok,
 } from "@/presentation/helpers/http/http-helper";
-import { AuthenticationModel } from "@/domain/usecases/authentication";
+import { AuthenticationModel } from "@/domain/usecases/account/authentication";
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
