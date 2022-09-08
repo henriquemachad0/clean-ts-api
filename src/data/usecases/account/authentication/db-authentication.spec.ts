@@ -14,6 +14,8 @@ const makeFakeAccount = (): AccountModel => ({
   email: "any_email@mail.com",
   password: "hashed_password",
 });
+import { throwError } from "@/domain/test";
+
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
@@ -97,9 +99,7 @@ describe("DbAuthentication UseCase", () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
     jest
       .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const primise = sut.auth(makeFakeAuthentication());
     await expect(primise).rejects.toThrow();
   });
@@ -124,9 +124,7 @@ describe("DbAuthentication UseCase", () => {
     const { sut, hashCompareStub } = makeSut();
     jest
       .spyOn(hashCompareStub, "compare")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const primise = sut.auth(makeFakeAuthentication());
     await expect(primise).rejects.toThrow();
   });
@@ -151,9 +149,7 @@ describe("DbAuthentication UseCase", () => {
     const { sut, encrypterStub } = makeSut();
     jest
       .spyOn(encrypterStub, "encrypt")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const primise = sut.auth(makeFakeAuthentication());
     await expect(primise).rejects.toThrow();
   });
@@ -175,9 +171,7 @@ describe("DbAuthentication UseCase", () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut();
     jest
       .spyOn(updateAccessTokenRepositoryStub, "updateAccessToken")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const primise = sut.auth(makeFakeAuthentication());
     await expect(primise).rejects.toThrow();
   });

@@ -12,6 +12,7 @@ import {
   ok,
 } from "@/presentation/helpers/http/http-helper";
 import { AuthenticationParams } from "@/domain/usecases/account/authentication";
+import { throwError } from "@/domain/test";
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
@@ -79,9 +80,7 @@ describe("Login Controller", () => {
     const { sut, authenticationStub } = makeSut();
     jest
       .spyOn(authenticationStub, "auth")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
   });

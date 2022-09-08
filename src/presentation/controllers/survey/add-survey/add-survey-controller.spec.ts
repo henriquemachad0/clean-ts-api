@@ -20,6 +20,8 @@ const makeFakeRequest = (): HttpRequest => ({
     date: new Date()
   },
 });
+import { throwError } from "@/domain/test";
+
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -92,9 +94,7 @@ describe("AddSurvey Controller", () => {
     const { sut, addSurveyStub } = makeSut();
     jest
       .spyOn(addSurveyStub, "add")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
   });

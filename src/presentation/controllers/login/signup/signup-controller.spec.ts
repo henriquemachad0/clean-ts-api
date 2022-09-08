@@ -15,6 +15,7 @@ import {
   badRequest,
   forbidden,
 } from "@/presentation/helpers/http/http-helper";
+import { throwError } from "@/domain/test";
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -152,9 +153,7 @@ describe("SignUp Controller", () => {
     const { sut, authenticationStub } = makeSut();
     jest
       .spyOn(authenticationStub, "auth")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
   });

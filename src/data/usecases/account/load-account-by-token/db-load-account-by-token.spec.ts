@@ -11,6 +11,7 @@ const makeFakeAccount = (): AccountModel => ({
   email: "valid_email@mail.com",
   password: "hashed_password",
 });
+import { throwError } from "@/domain/test";
 
 const makeDecrypter = (): Decrypter => {
   class DecrypterStub implements Decrypter {
@@ -94,9 +95,7 @@ describe("DbLoadAccountByToken Usecase", () => {
     const { sut, decrypterStub } = makeSut();
     jest
       .spyOn(decrypterStub, "decrypt")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const promise = sut.load("any_token", "any_role");
     await expect(promise).rejects.toThrow();
   });
@@ -105,9 +104,7 @@ describe("DbLoadAccountByToken Usecase", () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut();
     jest
       .spyOn(loadAccountByTokenRepositoryStub, "loadByToken")
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+     .mockImplementationOnce(throwError);
     const promise = sut.load("any_token", "any_role");
     await expect(promise).rejects.toThrow();
   });
