@@ -21,24 +21,10 @@ const makeFakeRequest = (): HttpRequest => ({
   },
 });
 import { throwError } from "@/domain/test";
+import { mockAddSurvey, mockValidation } from "@/presentation/test";
 
 
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: any): Error {
-      return null;
-    }
-  }
-  return new ValidationStub();
-};
-const makeAddSurvey = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add(data: AddSurveyParams): Promise<void> {
-      return new Promise((resolve) => resolve());
-    }
-  }
-  return new AddSurveyStub();
-};
+
 
 type SutTypes = {
   sut: AddSurveyController;
@@ -47,8 +33,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const validationStub = makeValidation();
-  const addSurveyStub = makeAddSurvey();
+  const validationStub = mockValidation();
+  const addSurveyStub = mockAddSurvey();
   const sut = new AddSurveyController(validationStub, addSurveyStub);
 
   return {

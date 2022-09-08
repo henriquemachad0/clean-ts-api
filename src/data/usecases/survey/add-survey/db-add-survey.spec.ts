@@ -4,8 +4,6 @@ import MockDate from "mockdate"
 import { mockAddSurveyParams, throwError } from "@/domain/test";
 import { mockAddSurveyRepository } from "@/data/test";
 
-
-
 type SutTypes = {
   sut: DbAddSurvey;
   addSurveyRepositoryStub: AddSurveyRepository;

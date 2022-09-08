@@ -1,12 +1,9 @@
 import { SignUpController } from "./signup-controller";
 import {
-  AccountModel,
   AddAccount,
-  AddAccountParams,
   HttpRequest,
   Validation,
-  Authentication,
-  AuthenticationParams,
+  Authentication
 } from "./signup-controller-protocols";
 import { EmailInUseError, MissingParamError, ServerError } from "@/presentation/errors";
 import {
@@ -15,34 +12,8 @@ import {
   badRequest,
   forbidden,
 } from "@/presentation/helpers/http/http-helper";
-import { throwError, mockAccountModel } from "@/domain/test";
-
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add(account: AddAccountParams): Promise<AccountModel> {
-      return new Promise((resolve) => resolve(mockAccountModel()));
-    }
-  }
-  return new AddAccountStub();
-};
-
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationParams): Promise<string> {
-      return new Promise((resolve) => resolve("any_token"));
-    }
-  }
-  return new AuthenticationStub();
-};
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: any): Error {
-      return null;
-    }
-  }
-  return new ValidationStub();
-};
+import { throwError } from "@/domain/test";
+import { mockAddAccount, mockAuthentication, mockValidation } from "@/presentation/test";
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -53,7 +24,6 @@ const makeFakeRequest = (): HttpRequest => ({
   },
 });
 
-
 type SutTypes = {
   sut: SignUpController;
   addAccountStub: AddAccount;
@@ -62,9 +32,9 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addAccountStub = makeAddAccount();
-  const validationStub = makeValidation();
-  const authenticationStub = makeAuthentication();
+  const addAccountStub = mockAddAccount();
+  const validationStub = mockValidation();
+  const authenticationStub = mockAuthentication();
   const sut = new SignUpController(
     addAccountStub,
     validationStub,
