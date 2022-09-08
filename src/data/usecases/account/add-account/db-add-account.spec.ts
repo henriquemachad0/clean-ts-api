@@ -1,22 +1,18 @@
 import { DbAddAccount } from "./db-add-account";
 import {
   Hasher,
-  AddAccountParams,
   AccountModel,
   AddAccountRepository,
   LoadAccountByEmailRepository,
 } from "./db-add-account-protocols";
-import { mockAccountModel, mockAddAccountParams, throwError } from "@/domain/test";
+import {
+  mockAccountModel,
+  mockAddAccountParams,
+  throwError,
+} from "@/domain/test";
+import { mockHasher, mockAddAccountRepository } from "@/data/test";
 
-const mockHasher = (): Hasher => {
-  class HasherStub implements Hasher {
-    async hash(value: string): Promise<string> {
-      return new Promise((resolve) => resolve("any_password"));
-    }
-  }
-  return new HasherStub();
-};
-const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
+const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub
     implements LoadAccountByEmailRepository
   {
@@ -27,14 +23,6 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   return new LoadAccountByEmailRepositoryStub();
 };
 
-const makeAddAccountRepository = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(accountData: AddAccountParams): Promise<AccountModel> {
-      return new Promise((resolve) => resolve(mockAccountModel()));
-    }
-  }
-  return new AddAccountRepositoryStub();
-};
 
 type SutTypes = {
   sut: DbAddAccount;
@@ -44,9 +32,9 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository();
   const hasherStub = mockHasher();
-  const addAccountRepositoryStub = makeAddAccountRepository();
+  const addAccountRepositoryStub = mockAddAccountRepository();
   const sut = new DbAddAccount(
     hasherStub,
     addAccountRepositoryStub,
@@ -90,7 +78,7 @@ describe("DbAddAccount Usecase", () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     jest
       .spyOn(addAccountRepositoryStub, "add")
-     .mockImplementationOnce(throwError);
+      .mockImplementationOnce(throwError);
     const promise = sut.add(mockAddAccountParams());
     await expect(promise).rejects.toThrow();
   });

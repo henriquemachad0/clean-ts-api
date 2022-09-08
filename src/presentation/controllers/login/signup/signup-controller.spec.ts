@@ -15,12 +15,12 @@ import {
   badRequest,
   forbidden,
 } from "@/presentation/helpers/http/http-helper";
-import { throwError } from "@/domain/test";
+import { throwError, mockAccountModel } from "@/domain/test";
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(account: AddAccountParams): Promise<AccountModel> {
-      return new Promise((resolve) => resolve(makeFakeAccount()));
+      return new Promise((resolve) => resolve(mockAccountModel()));
     }
   }
   return new AddAccountStub();
@@ -53,12 +53,6 @@ const makeFakeRequest = (): HttpRequest => ({
   },
 });
 
-const makeFakeAccount = (): AccountModel => ({
-  id: "valid_id",
-  name: "valid_name",
-  email: "valid_email@mail.com",
-  password: "valid_password",
-});
 
 type SutTypes = {
   sut: SignUpController;

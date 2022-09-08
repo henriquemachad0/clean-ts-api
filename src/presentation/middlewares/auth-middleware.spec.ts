@@ -10,14 +10,7 @@ import {
   serverError,
 } from "@/presentation/helpers/http/http-helper";
 import { AccessDeniedError } from "@/presentation/errors";
-import { throwError } from "@/domain/test";
-
-const makeFakeAccount = (): AccountModel => ({
-  id: "valid_id",
-  name: "valid_name",
-  email: "valid_email@mail.com",
-  password: "hashed_password",
-});
+import { throwError, mockAccountModel } from "@/domain/test";
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
@@ -36,7 +29,7 @@ const makeLoadAccountByToken = (): LoadAccountByToken => {
       accessToken: string,
       role?: string | undefined
     ): Promise<AccountModel> {
-      return new Promise((resolve) => resolve(makeFakeAccount()));
+      return new Promise((resolve) => resolve(mockAccountModel()));
     }
   }
   return new LoadAccountByTokenStub();
@@ -80,7 +73,7 @@ describe("Auth Middleware", () => {
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(
       ok({
-        accountId: "valid_id",
+        accountId: "any_id",
       })
     );
   });
