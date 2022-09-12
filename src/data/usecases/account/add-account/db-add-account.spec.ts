@@ -26,7 +26,7 @@ const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository();
   jest
     .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
-    .mockRejectedValue(new Promise((resolve) => resolve(null)));
+    .mockRejectedValue(Promise.reject(false));
   const hasherStub = mockHasher();
   const addAccountRepositoryStub = mockAddAccountRepository();
   const sut = new DbAddAccount(
