@@ -73,7 +73,7 @@ describe("Survey Mongo Repository", () => {
       const surveyResult = await surveyResultCollection.findOne({
         surveyId: survey.id,
         accountId: account.id,
-      })
+      });
       expect(surveyResult).toBeTruthy();
     });
 
@@ -93,10 +93,12 @@ describe("Survey Mongo Repository", () => {
         answer: survey.answers[1].answer,
         date: new Date(),
       });
-      const surveyResult = await surveyResultCollection.find({
-        surveyId: survey.id,
-        accountId: account.id,
-      }).toArray()
+      const surveyResult = await surveyResultCollection
+        .find({
+          surveyId: survey.id,
+          accountId: account.id,
+        })
+        .toArray();
 
       expect(surveyResult).toBeTruthy();
       expect(surveyResult.length).toBe(1);
@@ -144,4 +146,5 @@ describe("Survey Mongo Repository", () => {
       expect(surveyResult.answers[2].percent).toBe(0);
     });
   });
+
 });
