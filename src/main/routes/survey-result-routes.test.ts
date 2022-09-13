@@ -12,7 +12,7 @@ const makeAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
     name: "Henrique",
     email: "henrique.machado@gmail.com",
-    password: "123"
+    password: "123",
   });
 
   const id = res.ops[0]._id;
@@ -74,6 +74,12 @@ describe("Survey Routes", () => {
           answer: "Answer 1",
         })
         .expect(200);
+    });
+  });
+
+  describe("GET /surveys/:surveyId/results", () => {
+    test("Should return 403 on load survey result without accessToken", async () => {
+      await request(app).get("/api/surveys/any_id/results").expect(403);
     });
   });
 });
