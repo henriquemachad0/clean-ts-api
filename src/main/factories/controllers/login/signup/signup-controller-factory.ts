@@ -5,9 +5,6 @@ import { makeLogControllerDecorator } from '@/main/factories/decorators/log-cont
 import { SignUpController } from '@/presentation/controllers/login/signup/signup-controller'
 import { Controller } from '@/presentation/protocols'
 
-
-
-
 export const makeSignUpController = (): Controller => {
   const controller = new SignUpController(makeDbAddAccount(), makeSignUpValidation(), makeDbAuthentication())
   return makeLogControllerDecorator(controller)
