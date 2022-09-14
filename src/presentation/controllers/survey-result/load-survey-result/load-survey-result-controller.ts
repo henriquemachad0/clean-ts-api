@@ -15,8 +15,7 @@ export class LoadSurveyResultController implements Controller {
       if (!survey) {
         return forbidden(new InvalidParamError('surveyId'))
       }
-      const surveyResult = await this.loadSurveyResult.load(surveyId)
-      return ok(surveyResult)
+      const surveyResult = await this.loadSurveyResult.load(surveyId, httpRequest.accountId)      return ok(surveyResult)
     } catch (error) {
       return serverError(error)
     }
