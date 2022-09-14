@@ -1,6 +1,6 @@
 import { DbLoadAccountByToken } from '@/data/usecases'
-import { DecrypterSpy, LoadAccountByTokenRepositorySpy } from '@/../tests/data/mocks'
-import { throwError } from '@/../tests/domain/mocks'
+import { DecrypterSpy, LoadAccountByTokenRepositorySpy } from '@/tests/data/mocks'
+import { throwError } from '@/tests/domain/mocks'
 
 import faker from 'faker'
 
@@ -60,7 +60,8 @@ describe('DbLoadAccountByToken Usecase', () => {
   test('Should return an account on success', async () => {
     const { sut, loadAccountByTokenRepositorySpy } = makeSut()
     const account = await sut.load(token, role)
-    expect(account).toEqual(loadAccountByTokenRepositorySpy.result)  })
+    expect(account).toEqual(loadAccountByTokenRepositorySpy.result)
+  })
 
   test('Should throw if Decrypter throws', async () => {
     const { sut, decrypterSpy } = makeSut()

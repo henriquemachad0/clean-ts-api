@@ -1,11 +1,13 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
 import { Authentication } from '@/domain/usecases'
+
 export class LoginController implements Controller {
   constructor (
     private readonly authentication: Authentication,
     private readonly validation: Validation
   ) {}
+
   async handle (request: LoginController.Request): Promise<HttpResponse> {
     try {
       const error = this.validation.validate(request)
@@ -26,6 +28,7 @@ export class LoginController implements Controller {
     }
   }
 }
+
 export namespace LoginController {
   export type Request = {
     email: string

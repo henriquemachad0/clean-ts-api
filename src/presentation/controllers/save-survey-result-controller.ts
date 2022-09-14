@@ -2,11 +2,13 @@ import { Controller, HttpResponse } from '@/presentation/protocols'
 import { forbidden, serverError, ok } from '@/presentation/helpers'
 import { InvalidParamError } from '@/presentation/errors'
 import { LoadSurveyById, SaveSurveyResult } from '@/domain/usecases'
+
 export class SaveSurveyResultController implements Controller {
   constructor (
     private readonly loadSurveyById: LoadSurveyById,
     private readonly saveSurveyResult: SaveSurveyResult
   ) {}
+
   async handle (request: SaveSurveyResultController.Request): Promise<HttpResponse> {
     try {
       const { accountId, surveyId, answer } = request
@@ -31,6 +33,7 @@ export class SaveSurveyResultController implements Controller {
     }
   }
 }
+
 export namespace SaveSurveyResultController {
   export type Request = {
     surveyId: string

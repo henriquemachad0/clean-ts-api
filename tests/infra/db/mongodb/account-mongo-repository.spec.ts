@@ -1,5 +1,5 @@
 import { AccountMongoRepository, MongoHelper } from '@/infra/db'
-import { mockAddAccountParams } from '@/../tests/domain/mocks'
+import { mockAddAccountParams } from '@/tests/domain/mocks'
 
 import { Collection } from 'mongodb'
 import faker from 'faker'
@@ -60,13 +60,14 @@ describe('AccountMongoRepository', () => {
       const exists = await sut.checkByEmail(addAccountParams.email)
       expect(exists).toBe(true)
     })
+
     test('Should return false if email is not valid', async () => {
       const sut = makeSut()
       const exists = await sut.checkByEmail(faker.internet.email())
       expect(exists).toBe(false)
     })
   })
-  
+
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on success', async () => {
       const sut = makeSut()

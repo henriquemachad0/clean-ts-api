@@ -8,6 +8,7 @@ export class AuthMiddleware implements Middleware {
     private readonly loadAccountByToken: LoadAccountByToken,
     private readonly role?: string
   ) {}
+
   async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
     try {
       const { accessToken } = request
@@ -23,6 +24,7 @@ export class AuthMiddleware implements Middleware {
     }
   }
 }
+
 export namespace AuthMiddleware {
   export type Request = {
     accessToken?: string
